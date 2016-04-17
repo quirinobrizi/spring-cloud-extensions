@@ -62,8 +62,9 @@ public class IpAddressLoadBalancerClient extends RibbonLoadBalancerClient {
 
         @Override
         public int getPort() {
-            if (isSecure() && isDiscoveryEnabledServer()) {
-                return getInstanceInfo().getSecurePort();
+            if (isDiscoveryEnabledServer()) {
+                InstanceInfo instanceInfo = getInstanceInfo();
+                return isSecure() ? instanceInfo.getSecurePort() : instanceInfo.getPort();
             }
             return this.server.getPort();
         }
